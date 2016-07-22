@@ -1,0 +1,27 @@
+{
+  "name": "wercker-github-tag-builder",
+  "version": "1.0.0",
+  "description": "As Wercker currently doesn't build tags pushed to github this is a way to workaround it.",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "minimist": "^1.2.0",
+    "request": "^2.73.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/javierfernandes/wercker-github-tag-builder.git"
+  },
+  "author": "Javier Fernandes <javier.fernandes@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/javierfernandes/wercker-github-tag-builder/issues"
+  },
+  "homepage": "https://github.com/javierfernandes/wercker-github-tag-builder#readme"
+}
