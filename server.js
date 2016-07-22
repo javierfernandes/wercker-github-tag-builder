@@ -48,7 +48,20 @@ app.post('/created/:secret', function(req, res) {
         res.status(401).json({status:"error", message:"Not Authorized"})
         return
     }
-    else if (req.body && req.body.ref_type && req.body.ref_type === "tag") {
+
+    if (!req.body) {
+        res.status(500).json({status: "error", message: "Incorrect body payload"});
+        return
+    }
+
+    // hook added to repository
+    if (req.body.zen && req.body.hook_id) {
+        res.status(200).send({status: 'ok', message: 'You reached us ! Have a nice day!'})
+        return
+    }
+
+    // new tag
+    if (req.body.ref_type && req.body.ref_type === "tag") {
         var tagName = req.body.ref
         console.log("Triggering build for tag " + tagName)
 
@@ -57,18 +70,17 @@ app.post('/created/:secret', function(req, res) {
             url: 'https://app.wercker.com/api/v3/runs',
             headers: {
                 'Authorization': 'Bearer ' + WERCKER_TOKEN,
-                'Content-Type' : 'application/json'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                applicationId : WERCKER_APP_ID,
+                applicationId: WERCKER_APP_ID,
                 pipelineId: WERCKER_PIPELINE_ID,
                 branch: tagName
             })
-        }, function(error, response, body) {
+        }, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 var result = JSON.parse(body);
-                res.status(200).json({ status:"ok", message: result })
-                console.log(result)
+                res.status(200).json({status: "ok", message: result})
             }
             else {
                 res.status(500).json({
@@ -80,9 +92,9 @@ app.post('/created/:secret', function(req, res) {
             }
         });
     }
-    else {
-        res.status(500).json({status: "error", message: "Incorrect body payload"});
-    }
+
+    res.status(500).json({status: "error", message: "Unknown GitHub Event", body: req.body});
+
 });
 
 app.listen(port);
