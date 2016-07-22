@@ -91,6 +91,7 @@ app.post('/created/:secret', function(req, res) {
                 })
             }
         });
+        return
     }
 
     res.status(500).json({status: "error", message: "Unknown GitHub Event", body: req.body});
